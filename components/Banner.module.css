@@ -1,8 +1,17 @@
+/** By default, this is a mobile breakpoint **/
 .container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: flex-start;
+  margin-bottom: 6rem;
+  position: relative;
+  z-index: 2;
+}
+
+.title {
+  letter-spacing: -0.025em;
+  font-weight: 800;
+  color: var(--text-black);
+
+  font-size: 3rem /* 48px */;
+  line-height: 1;
 }
 
 .title1 {
@@ -10,7 +19,6 @@
 }
 
 .title2 {
-  display: block;
   color: var(--text-purple);
 }
 
@@ -39,4 +47,8 @@
   line-height: 1.75rem /* 28px */;
   padding-left: 2.5rem /* 40px */;
   padding-right: 2.5rem /* 40px */;
+}
+
+.button:hover {
+  background-color: var(--text-purple-dark);
 }
