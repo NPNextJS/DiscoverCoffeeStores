@@ -18,7 +18,7 @@ export default function Home() {
       <main className={styles.main}>
         <Banner
           buttonText="View stores nearby!"
-          handleOnBannerClick={handleOnBannerClick}
+          handleOnClick={handleOnBannerClick}
         />
         <Image
           className={styles.heroImage}
