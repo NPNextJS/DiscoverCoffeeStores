@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "@/styles/Home.module.css";
-import Banner from "@/components/Banner";
+import Banner from "../components/banner";
+import Card from "../components/card";
 
 export default function Home() {
   const handleOnBannerClick = () => {
@@ -20,11 +21,13 @@ export default function Home() {
           buttonText="View stores nearby!"
           handleOnClick={handleOnBannerClick}
         />
-        <Image
-          className={styles.heroImage}
-          src="/static/hero-image.png"
-          width={700}
-          height={400}
+        <div className={styles.heroImage}>
+          <Image src="/static/hero-image.png" width={700} height={400} />
+        </div>
+        <Card
+          name="DarkHorse Coffee"
+          imgUrl="/static/hero-image.png"
+          href="/coffee-store/darkhorse-coffee"
         />
       </main>
     </>

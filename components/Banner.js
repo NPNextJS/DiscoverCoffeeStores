@@ -1,6 +1,7 @@
-import styles from "./Banner.module.css";
+import styles from "./banner.module.css";
 
-const Banner = ({ buttonText, handleOnClick }) => {
+const Banner = (props) => {
+  const { buttonText, handleOnClick } = props;
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>
