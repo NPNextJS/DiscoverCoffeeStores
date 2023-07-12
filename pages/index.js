@@ -3,12 +3,13 @@ import Image from "next/image";
 import styles from "@/styles/Home.module.css";
 import Banner from "../components/banner";
 import Card from "../components/card";
-import coffeeStoreData from "../data/coffee-stores.json";
+import fetchCoffeeStores from "../libs/coffee-stores";
 
 export async function getStaticProps(context) {
+  const coffeeStore = await fetchCoffeeStores();
   return {
     props: {
-      coffeeStore: coffeeStoreData,
+      coffeeStore,
     },
   };
 }
@@ -41,10 +42,13 @@ export default function Home(props) {
               {coffeeStore.map((coffeeStore) => {
                 return (
                   <Card
-                    key={coffeeStore.id}
+                    key={coffeeStore.fsq_id}
                     name={coffeeStore.name}
-                    imgUrl={coffeeStore.imgUrl}
-                    href={`/coffee-store/${coffeeStore.id}`}
+                    imgUrl={
+                      coffeeStore.imgUrl ||
+                      "https://images.unsplash.com/photo-1559496417-e7f25cb247f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2564&q=80"
+                    }
+                    href={`/coffee-store/${coffeeStore.fsq_id}`}
                   />
                 );
               })}
