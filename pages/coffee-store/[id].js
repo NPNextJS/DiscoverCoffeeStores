@@ -37,7 +37,7 @@ const CoffeeStore = (props) => {
     return <h2>Loading...</h2>;
   }
 
-  const { address, name, neighbourhood, imgUrl } = props.coffeeStore;
+  const { id, address, locality, name, imgUrl } = props.coffeeStore;
   const handleUpvoteButton = () => {
     console.log("handle up vote");
   };
@@ -75,7 +75,7 @@ const CoffeeStore = (props) => {
           </div>
           <div className={styles.iconWrapper}>
             <Image src="/static/icons/near_me.svg" width={24} height={24} />
-            <p className={styles.text}>{neighbourhood}</p>
+            <p className={styles.text}>{locality}</p>
           </div>
           <div className={styles.iconWrapper}>
             <Image src="/static/icons/favorite.svg" width={24} height={24} />
