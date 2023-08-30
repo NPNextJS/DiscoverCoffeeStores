@@ -1,11 +1,11 @@
 import { createApi } from "unsplash-js";
 
 const unsplash = createApi({
-  accessKey: process.env.UNSPLASH_ACCESS_KEY,
+  accessKey: process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY,
 });
 
-const getCoffeeStoresURL = (query, limit) => {
-  return `https://api.foursquare.com/v3/places/search?query=${query}&limit=${limit}`;
+const getCoffeeStoresURL = (latLong, query, limit) => {
+  return `https://api.foursquare.com/v3/places/search?query=${query}&ll=${latLong}&limit=${limit}`;
 };
 
 const getListCoffeeStorePhotos = async () => {
@@ -21,17 +21,23 @@ const getListCoffeeStorePhotos = async () => {
   });
 };
 
-const fetchCoffeeStores = async () => {
+const fetchCoffeeStores = async (
+  latLong = "43.65267326999575,-79.39545615725015",
+  limit = 6
+) => {
   const coffeeStorePhotos = await getListCoffeeStorePhotos();
   const options = {
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization: process.env.FOURSQUARE_API_KEY,
+      Authorization: process.env.NEXT_PUBLIC_FOURSQUARE_API_KEY,
     },
   };
 
-  const response = await fetch(getCoffeeStoresURL("coffee", 6), options);
+  const response = await fetch(
+    getCoffeeStoresURL(latLong, "coffee", limit),
+    options
+  );
   const data = await response.json();
   return data.results.map((result, idx) => {
     return {
