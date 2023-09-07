@@ -5,7 +5,8 @@ import Banner from "../components/banner";
 import Card from "../components/card";
 import fetchCoffeeStores from "../libs/coffee-stores";
 import useTrackLocation from "./hooks/use-track-location";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ACTION_TYPES, StoreContext } from "./_app";
 
 export async function getStaticProps(context) {
   const coffeeStore = await fetchCoffeeStores();
@@ -17,10 +18,13 @@ export async function getStaticProps(context) {
 }
 
 export default function Home(props) {
-  const { handleTrackLocation, latLong, locationErrorMsg, isLocating } =
+  const { handleTrackLocation, locationErrorMsg, isLocating } =
     useTrackLocation();
-  const [coffeeStoresNearMe, setCoffeeStoresNearMe] = useState([]);
+  // const [coffeeStoresNearMe, setCoffeeStoresNearMe] = useState([]);
   const [coffeeStoresNearMeError, setCoffeeStoresNearMeError] = useState(null);
+  const { dispatch, state } = useContext(StoreContext);
+
+  const { latLong, coffeeStores } = state;
 
   useEffect(() => {
     async function fetchNearByCoffeeStores() {
@@ -28,7 +32,10 @@ export default function Home(props) {
         try {
           const fetchedCoffeeStores = await fetchCoffeeStores(latLong, 30);
           console.log(fetchedCoffeeStores);
-          setCoffeeStoresNearMe(fetchedCoffeeStores);
+          dispatch({
+            type: ACTION_TYPES.SET_COFFEE_STORES,
+            payload: { coffeeStores: fetchedCoffeeStores },
+          });
         } catch (error) {
           console.log(error);
           setCoffeeStoresNearMeError(error.message);
@@ -61,11 +68,11 @@ export default function Home(props) {
         <div className={styles.heroImage}>
           <Image src="/static/hero-image.png" width={700} height={400} />
         </div>
-        {coffeeStoresNearMe.length > 0 && (
+        {coffeeStores.length > 0 && (
           <div className={styles.sectionWrapper}>
             <h2 className={styles.heading2}>Coffe Stores Near Me</h2>
             <div className={styles.cardLayout}>
-              {coffeeStoresNearMe.map((coffeeStore) => {
+              {coffeeStores.map((coffeeStore) => {
                 return (
                   <Card
                     key={coffeeStore.fsq_id}
