@@ -45,16 +45,45 @@ const CoffeeStore = (props) => {
 
   const [coffeeStore, setCoffeeStore] = useState(props.coffeeStore);
 
+  const handleCreateCoffeeStores = async (coffeeStore) => {
+    try {
+      const { fsq_id, name, voting, imgUrl, neighbourhood, address } =
+        coffeeStore;
+      const response = await fetch("/api/createCoffeeStores", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: fsq_id,
+          name,
+          voting: 0,
+          imgUrl,
+          neighbourhood: neighbourhood || "",
+          address: address || "",
+        }),
+      });
+      const dbCoffeeStore = response.json();
+      console.log(dbCoffeeStore);
+    } catch (error) {
+      console.error("Error creating coffee store", error);
+    }
+  };
+
   useEffect(() => {
     if (isEmpty(props.coffeeStore)) {
       if (coffeeStores.length > 0) {
         const coffeeStoreById = coffeeStores.find((coffeeStore) => {
           return coffeeStore.fsq_id.toString() === id;
         });
-        setCoffeeStore(coffeeStoreById);
+
+        if (coffeeStoreById) {
+          setCoffeeStore(coffeeStoreById);
+          handleCreateCoffeeStores(coffeeStoreById);
+        }
       }
+    } else {
+      handleCreateCoffeeStores(props.coffeeStore);
     }
-  }, [id]);
+  }, [id, props, props.coffeeStore]);
 
   if (router.isFallback) {
     return <h2>Loading...</h2>;
