@@ -9,6 +9,7 @@ import fetchCoffeeStores from "../../libs/coffee-stores";
 import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "@/store/store-context";
 import { isEmpty } from "../../utils";
+import useSWR from "swr";
 
 export async function getStaticProps(staticProps) {
   const { params } = staticProps;
@@ -45,6 +46,18 @@ const CoffeeStore = (props) => {
 
   const [coffeeStore, setCoffeeStore] = useState(props.coffeeStore);
   const [votingCount, setVotingCount] = useState(1);
+  const fetcher = (url) => fetch(url).then((res) => res.json());
+  const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher, {
+    refreshInterval: 1000,
+  });
+
+  useEffect(() => {
+    console.log("from swr", data);
+    if (data && data.length > 0) {
+      setCoffeeStore(data[0]);
+      setVotingCount(data[0].voting);
+    }
+  }, [data]);
 
   const handleCreateCoffeeStores = async (coffeeStore) => {
     try {
@@ -96,6 +109,11 @@ const CoffeeStore = (props) => {
     let count = votingCount + 1;
     setVotingCount(count);
   };
+
+  if (error) {
+    console.log(error);
+    return <div>Somthing went wrong retrieving coffee store page</div>;
+  }
 
   return (
     <div className={styles.layout}>
