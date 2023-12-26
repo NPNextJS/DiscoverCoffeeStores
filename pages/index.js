@@ -68,7 +68,12 @@ export default function Home(props) {
           <p>Something went wrong: {coffeeStoresNearMeError}</p>
         )}
         <div className={styles.heroImage}>
-          <Image src="/static/hero-image.png" width={700} height={400} />
+          <Image
+            alt="hero"
+            src="/static/hero-image.png"
+            width={700}
+            height={400}
+          />
         </div>
         {coffeeStores.length > 0 && (
           <div className={styles.sectionWrapper}>
