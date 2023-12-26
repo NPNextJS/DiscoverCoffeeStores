@@ -75,7 +75,7 @@ const CoffeeStore = (props) => {
           address: address || "",
         }),
       });
-      const dbCoffeeStore = response.json();
+      const dbCoffeeStore = await response.json();
       console.log(dbCoffeeStore);
     } catch (error) {
       console.error("Error creating coffee store", error);
@@ -104,10 +104,25 @@ const CoffeeStore = (props) => {
   }
 
   const { address, locality, name, imgUrl } = coffeeStore;
-  const handleUpvoteButton = () => {
+  const handleUpvoteButton = async () => {
     console.log("handle up vote");
-    let count = votingCount + 1;
-    setVotingCount(count);
+    try {
+      const response = await fetch("/api/favouriteCoffeeStoreById", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id,
+        }),
+      });
+      const dbCoffeeStore = await response.json();
+      console.log(dbCoffeeStore);
+      if (dbCoffeeStore && dbCoffeeStore.length > 0) {
+        let count = votingCount + 1;
+        setVotingCount(count);
+      }
+    } catch (error) {
+      console.error("Error upvoting the coffee store", error);
+    }
   };
 
   if (error) {
