@@ -4,7 +4,7 @@ import styles from "@/styles/Home.module.css";
 import Banner from "../components/banner";
 import Card from "../components/card";
 import fetchCoffeeStores from "../libs/coffee-stores";
-import useTrackLocation from "./hooks/use-track-location";
+import useTrackLocation from "../hooks/use-track-location";
 import { useContext, useEffect, useState } from "react";
 import { ACTION_TYPES, StoreContext } from "@/store/store-context";
 
